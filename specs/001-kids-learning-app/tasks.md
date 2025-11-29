@@ -102,15 +102,15 @@
 
 **Purpose**: Improvements that affect multiple user stories
 
-- [ ] T024 [P] Implement basic error handling across the application.
-- [ ] T025 [P] Add logging for key application events (e.g., lesson started, quiz completed) in `src/services/logging_service.py`.
-- [ ] T026 [P] Write unit tests for `src/services/math_service.py`.
-- [ ] T027 [P] Write unit tests for `src/services/english_service.py`.
-- [ ] T028 [P] Write unit tests for `src/services/database.py`.
-- [ ] T029 [P] Write integration tests for core user flows (e.g., complete math lesson) in `tests/integration/`.
-- [ ] T030 Create `README.md` for the project with setup, run, and test instructions.
-- [ ] T031 Final code review and refactoring for maintainability.
-- [ ] T032 Build and package the application for target platforms (Windows, macOS, Linux).
+- [X] T024 [P] Implement basic error handling across the application.
+- [X] T025 [P] Add logging for key application events (e.g., lesson started, quiz completed) in `src/services/logging_service.py`.
+- [X] T026 [P] Write unit tests for `src/services/math_service.py`.
+- [X] T027 [P] Write unit tests for `src/services/english_service.py`.
+- [X] T028 [P] Write unit tests for `src/services/database.py`.
+- [X] T029 [P] Write integration tests for core user flows (e.g., complete math lesson) in `tests/integration/`.
+- [X] T030 Create `README.md` for the project with setup, run, and test instructions.
+- [X] T031 Final code review and refactoring for maintainability.
+- [X] T032 Build and package the application for target platforms (Windows, macOS, Linux).
 
 ---
 

@@ -8,6 +8,7 @@ from models.schema import create_schema
 from services.data_seeder import seed_initial_data
 from services.math_service import MathService
 from services.english_service import EnglishService
+from services.logging_service import setup_logging, log_event
 
 class KidsLearningApp(QWidget):
     def __init__(self):
@@ -20,8 +21,14 @@ class KidsLearningApp(QWidget):
         self.init_ui()
 
     def init_db_and_data(self):
-        create_schema()
-        seed_initial_data()
+        try:
+            create_schema()
+            seed_initial_data()
+            log_event('info', "Database initialized and seeded successfully.")
+        except Exception as e:
+            log_event('critical', f"Failed to initialize or seed database: {e}")
+            QMessageBox.critical(self, "Database Error", f"Failed to initialize or seed database: {e}")
+            sys.exit(1)
 
     def init_ui(self):
         self.main_layout = QVBoxLayout()
@@ -56,28 +63,38 @@ class KidsLearningApp(QWidget):
 
     def start_learning_session(self):
         selected_topic_id = self.topic_selection_view.get_selected_topic_id()
-        if selected_topic_id:
-            # Determine if it's a Math or English topic based on the topic's subject_id
-            from models.models import Topic, Subject # Import here to avoid circular dependency
-            selected_topic = Topic.find_by_id(selected_topic_id)
-            if selected_topic:
-                subject = Subject.find_by_id(selected_topic.subject_id)
-                if subject.name == "Mathematics":
-                    lesson, questions = self.math_service.get_lesson_and_questions_for_topic(selected_topic_id)
-                    self.math_lesson_view.set_lesson_data(lesson, questions)
-                    self.stacked_widget.setCurrentWidget(self.math_lesson_view)
-                elif subject.name == "English":
-                    lesson, questions = self.english_service.get_lesson_and_questions_for_topic(selected_topic_id)
-                    self.english_exercise_view.set_lesson_data(lesson, questions)
-                    self.stacked_widget.setCurrentWidget(self.english_exercise_view)
-                else:
-                    QMessageBox.warning(self, "Selection Error", "Unsupported subject type.")
-            else:
-                QMessageBox.warning(self, "Selection Error", "Selected topic not found.")
-        else:
+        if not selected_topic_id:
             QMessageBox.warning(self, "Selection Error", "Please select a topic before starting.")
+            return
+
+        try:
+            from models.models import Topic, Subject
+            selected_topic = Topic.find_by_id(selected_topic_id)
+            if not selected_topic:
+                QMessageBox.warning(self, "Selection Error", "Selected topic not found in database.")
+                return
+            
+            subject = Subject.find_by_id(selected_topic.subject_id)
+            if not subject:
+                QMessageBox.warning(self, "Selection Error", "Subject for selected topic not found.")
+                return
+
+            if subject.name == "Mathematics":
+                lesson, questions = self.math_service.get_lesson_and_questions_for_topic(selected_topic_id)
+                self.math_lesson_view.set_lesson_data(lesson, questions)
+                self.stacked_widget.setCurrentWidget(self.math_lesson_view)
+            elif subject.name == "English":
+                lesson, questions = self.english_service.get_lesson_and_questions_for_topic(selected_topic_id)
+                self.english_exercise_view.set_lesson_data(lesson, questions)
+                self.stacked_widget.setCurrentWidget(self.english_exercise_view)
+            else:
+                QMessageBox.warning(self, "Selection Error", "Unsupported subject type for learning session.")
+        except Exception as e:
+            QMessageBox.critical(self, "Application Error", f"An unexpected error occurred: {e}")
 
 if __name__ == "__main__":
+    setup_logging()
+    log_event('info', "Kids Learning App started.")
     app = QApplication(sys.argv)
     window = KidsLearningApp()
     window.show()
