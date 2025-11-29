@@ -23,10 +23,31 @@ def setup_logging():
 
     print(f"Logging configured. Log file: {LOG_FILE}")
 
+# Initialize logger for the module
+_logger = logging.getLogger(__name__)
+
+def log_event(level: str, message: str):
+    """Logs an event at the specified level."""
+    if level == 'info':
+        _logger.info(message)
+    elif level == 'warning':
+        _logger.warning(message)
+    elif level == 'error':
+        _logger.error(message)
+    elif level == 'critical':
+        _logger.critical(message)
+    elif level == 'debug':
+        _logger.debug(message)
+    else:
+        _logger.info(f"Unknown log level '{level}': {message}")
+
+
 if __name__ == '__main__':
     setup_logging()
-    logger = logging.getLogger(__name__)
-    logger.info("Logging service initialized and tested.")
-    logger.debug("This is a debug message.")
-    logger.warning("This is a warning message.")
-    logger.error("This is an error message.")
+    _logger.info("Logging service initialized and tested.")
+    log_event("info", "This is an info message via log_event.")
+    log_event("debug", "This is a debug message via log_event.")
+    log_event("warning", "This is a warning message via log_event.")
+    log_event("error", "This is an error message via log_event.")
+    log_event("critical", "This is a critical message via log_event.")
+    log_event("unknown", "This is a message with an unknown level.")
