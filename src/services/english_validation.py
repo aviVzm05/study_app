@@ -34,17 +34,17 @@ class EnglishValidationService:
                 corrected_sentence = re.sub(r"\b" + re.escape(word) + r"\b", self.common_spelling_mistakes[word], corrected_sentence, flags=re.IGNORECASE)
 
         # 2. Basic Grammar Check
-        for rule in self.basic_grammar_rules:
-            if re.search(rule["pattern"], corrected_sentence):
-                feedback.append(rule["error"])
-                # Apply correction for demonstration, but real corrections would be more complex
-                if "correction" in rule:
-                    corrected_sentence = re.sub(rule["pattern"], rule["correction"], corrected_sentence)
+        # for rule in self.basic_grammar_rules:
+        #     if re.search(rule["pattern"], corrected_sentence):
+        #         feedback.append(rule["error"])
+        #         # Apply correction for demonstration, but real corrections would be more complex
+        #         if "correction" in rule:
+        #             corrected_sentence = re.sub(rule["pattern"], rule["correction"], corrected_sentence)
 
-        # 3. Capitalization check (start of sentence)
-        if corrected_sentence and not corrected_sentence[0].isupper() and not corrected_sentence[0].isnumeric():
-            feedback.append("Sentence should start with a capital letter.")
-            corrected_sentence = corrected_sentence[0].upper() + corrected_sentence[1:]
+        # # 3. Capitalization check (start of sentence)
+        # if corrected_sentence and not corrected_sentence[0].isupper() and not corrected_sentence[0].isnumeric():
+        #     feedback.append("Sentence should start with a capital letter.")
+        #     corrected_sentence = corrected_sentence[0].upper() + corrected_sentence[1:]
 
         is_correct = not feedback # If no feedback, then it's correct based on these rules
         return is_correct, feedback, corrected_sentence

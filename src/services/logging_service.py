@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 from datetime import datetime
+import sys
 
 LOG_DIR = Path(__file__).parent.parent.parent / "logs"
 LOG_FILE = LOG_DIR / "app.log"

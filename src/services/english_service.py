@@ -7,7 +7,8 @@ class EnglishService:
     def get_lesson_and_questions_for_topic(self, topic_id):
         """Retrieves lesson and associated questions for a given topic ID."""
         lesson = next((l for l in Lesson.find_all() if l.topic_id == topic_id), None)
-        questions = [q for q in Question.find_all() if q.topic_id == topic_id and q.question_type == 'sentence_construction']
+        questions = [q for q in Question.find_all() if q.topic_id == topic_id 
+                     and (q.question_type == 'sentence_construction' or q.question_type == 'fill_in_the_blank')]
         return lesson, questions
 
     def get_topics_for_grade_subject(self, grade, subject_id):
