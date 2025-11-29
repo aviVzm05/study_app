@@ -54,12 +54,12 @@
 
 ### Implementation for User Story 1
 
-- [ ] T011 [P] [US1] Implement UI for grade selection in `src/ui/grade_selection_view.py`.
-- [ ] T012 [P] [US1] Implement UI for subject/topic selection in `src/ui/topic_selection_view.py`.
-- [ ] T013 [US1] Implement service for fetching math lessons and questions in `src/services/math_service.py`.
-- [ ] T014 [US1] Implement UI for displaying math lessons and practice problems in `src/ui/math_lesson_view.py`.
-- [ ] T015 [US1] Implement logic for validating math answers and providing feedback in `src/services/math_validation.py`.
-- [ ] T016 [US1] Integrate math learning flow into `src/main.py` and connect UI views.
+- [X] T011 [P] [US1] Implement UI for grade selection in `src/ui/grade_selection_view.py`.
+- [X] T012 [P] [US1] Implement UI for subject/topic selection in `src/ui/topic_selection_view.py`.
+- [X] T013 [US1] Implement service for fetching math lessons and questions in `src/services/math_service.py`.
+- [X] T014 [US1] Implement UI for displaying math lessons and practice problems in `src/ui/math_lesson_view.py`.
+- [X] T015 [US1] Implement logic for validating math answers and providing feedback in `src/services/math_validation.py`.
+- [X] T016 [US1] Integrate math learning flow into `src/main.py` and connect UI views.
 
 **Checkpoint**: At this point, User Story 1 should be fully functional and testable independently
 
