@@ -83,6 +83,29 @@ After a student answers a question, they immediately receive an explanation for 
 - **Performance History**: A collection of individual question attempts, including the question asked, the student's answer, correctness, and the explanation provided.
 - **LLM Prompt**: The input provided to the LLM to generate questions, potentially including subject, difficulty band, and student performance context.
 
+### Key Entities *(include if feature involves data)*
+
+-   **Student**: A user of the learning application, identified by a unique ID.
+-   **Question**: A dynamically generated quiz item, including the question text, possible answers (if multiple choice), the correct answer, and an explanation.
+-   **Quiz Session**: A record of a student's interaction with a set of questions, including start/end times and overall performance.
+-   **Performance History**: A collection of individual question attempts, including the question asked, the student's answer, correctness, and the explanation provided.
+-   **LLM Prompt**: The input provided to the LLM to generate questions, potentially including subject, difficulty band, and student performance context.
+
+## Architectural Overview
+
+This section describes the key architectural components and their interactions, particularly focusing on the integration of the Large Language Model (LLM) for dynamic content generation and adaptive learning.
+
+### Core Components
+
+-   **User Interface (UI)**: Built with PyQt6, responsible for displaying questions, capturing user input, and presenting feedback.
+-   **Data Service**: Manages interaction with the local SQLite database for storing student progress, performance history, and potentially a cache of generated questions/explanations.
+-   **LLM Service**: A critical new component responsible for:
+    -   Interfacing with the Gemini API to request dynamic questions, answers, and explanations based on subject, difficulty, and student performance context.
+    -   Handling API key management (from environment variables).
+    -   Implementing retry mechanisms and graceful degradation for LLM API failures.
+-   **Adaptive Learning Service**: Utilizes student performance history to determine optimal question parameters (subject, difficulty, type) for the LLM Service.
+-   **Validation Services (English/Math)**: Existing services, possibly enhanced, to validate student answers against the dynamically provided correct answers.
+
 ## Success Criteria *(mandatory)*
 
 ### Measurable Outcomes
