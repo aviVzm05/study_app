@@ -15,7 +15,7 @@ class GradeSelectionView(QWidget):
         grade_layout = QHBoxLayout()
         self.grade_label = QLabel("Grade:")
         self.grade_combo = QComboBox()
-        self.grade_combo.addItems([str(i) for i in range(5, 11)]) # Grades 5-10
+        self.grade_combo.addItems([str(5)]) # Only 5th grade available
         grade_layout.addWidget(self.grade_label)
         grade_layout.addWidget(self.grade_combo)
         self.layout.addLayout(grade_layout)

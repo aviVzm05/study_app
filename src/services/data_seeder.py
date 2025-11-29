@@ -22,9 +22,9 @@ def seed_initial_data():
     english_subject.save()
 
     # Seed one topic per subject per grade (5-10)
-    for grade in range(5, 11):
+    grade = 5
         # Existing Math Topic: Decimals
-        math_decimals_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Decimals")
+        math_decimals_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Decimals")
         math_decimals_topic.save()
 
         Lesson(topic_id=math_decimals_topic.id, title=f"Understanding Decimals (Grade {grade})",
@@ -42,7 +42,7 @@ def seed_initial_data():
                                  correct_answer="0.2").save()
 
         # Existing English Topic: Nouns
-        english_nouns_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Nouns")
+        english_nouns_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Nouns")
         english_nouns_topic.save()
 
         Lesson(topic_id=english_nouns_topic.id, title=f"Exploring Nouns (Grade {grade})",
@@ -56,10 +56,8 @@ def seed_initial_data():
         Question(topic_id=english_nouns_topic.id, question_type="sentence_construction",
                                    prompt="Write a sentence about your favorite animal.", correct_answer="[VALIDATION_RULE: describes favorite animal]").save()
         
-        # Add specific 7th Grade Math topics and questions from PDF
-        if grade == 7:
             # Integers Topic
-            math_integers_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Integers")
+            math_integers_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Integers")
             math_integers_topic.save()
             Lesson(topic_id=math_integers_topic.id, title=f"Operations on Integers (Grade {grade})",
                    content="""Integers include all positive and negative whole numbers, and zero. Operations like addition, subtraction, multiplication, and division follow specific rules based on the signs of the numbers.""").save()
@@ -77,7 +75,7 @@ def seed_initial_data():
                                      prompt="What is 12 ÷ -4?", options='["3", "-3", "-16"]', correct_answer="-3").save()
 
             # Rational Numbers Topic
-            math_rational_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Rational Numbers")
+            math_rational_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Rational Numbers")
             math_rational_topic.save()
             Lesson(topic_id=math_rational_topic.id, title=f"Operations on Rational Numbers (Grade {grade})",
                    content="""Rational numbers can be represented as p/q where q is not zero. Operations like addition, subtraction, multiplication, and division follow specific rules for fractions.""").save()
@@ -91,7 +89,7 @@ def seed_initial_data():
                                      prompt="What is 2/3 ÷ 1/5?", options='["10/3", "2/15", "1/3"]', correct_answer="10/3").save()
 
             # Geometry Topic
-            math_geometry_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Geometry")
+            math_geometry_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Geometry")
             math_geometry_topic.save()
             Lesson(topic_id=math_geometry_topic.id, title=f"Lines, Angles, and Shapes (Grade {grade})",
                    content="""Geometry involves the study of shapes, sizes, positions, and properties of space. This includes understanding lines, angles, and calculating perimeter and area.""").save()
@@ -105,7 +103,7 @@ def seed_initial_data():
                                      prompt="What is the area of a square with side 6cm?", options='["12cm", "24cm", "36cm²"]', correct_answer="36cm²").save()
 
             # Algebra Topic
-            math_algebra_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Algebra")
+            math_algebra_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Algebra")
             math_algebra_topic.save()
             Lesson(topic_id=math_algebra_topic.id, title=f"Algebraic Expressions and Equations (Grade {grade})",
                    content="""Algebra uses letters (variables) to represent numbers. Algebraic expressions combine variables and numbers using operations, while equations involve an equal sign.""").save()
@@ -117,7 +115,7 @@ def seed_initial_data():
                                      prompt="If 5x + 1 = 3x + 5, then x = ____.", correct_answer="2").save()
 
             # Data Handling Topic
-            math_data_handling_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Data Handling")
+            math_data_handling_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Data Handling")
             math_data_handling_topic.save()
             Lesson(topic_id=math_data_handling_topic.id, title=f"Mean, Median, and Mode (Grade {grade})",
                    content="""Data handling involves collecting, organizing, and analyzing data. Mean, Median, and Mode are measures of central tendency.""").save()
@@ -127,9 +125,8 @@ def seed_initial_data():
                                      prompt="What is the median of 7, 3, 9, 5, 11?", options='["7", "9", "5"]', correct_answer="7").save()
             Question(topic_id=math_data_handling_topic.id, question_type="multiple_choice",
                                      prompt="What is the mode of 4, 7, 9, 4, 3, 4, 5, 7?", options='["3", "7", "4"]', correct_answer="4").save()
-        # Add 25 new questions for 5th Grade Math (Number System and Operations)
-        if grade == 5:
-            math_ns_ops_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Number System and Operations")
+    # Add 25 new questions for 5th Grade Math (Number System and Operations)
+            math_ns_ops_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Number System and Operations")
             math_ns_ops_topic.save()
             Lesson(topic_id=math_ns_ops_topic.id, title=f"Number System and Operations (Grade {grade})",
                    content="""This lesson covers essential concepts in number systems including LCM, HCF, mean, median, mode, and fundamental operations like multiplication, division, and fractions.""").save()
@@ -219,9 +216,8 @@ def seed_initial_data():
                      prompt="Convert the mixed number 1 1/2 to an improper fraction. ____",
                      correct_answer="3/2").save()
 
-                # Add spelling test for 5th Grade English (both simple and moderate words)
-        if grade == 5:
-            english_spelling_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Spelling Test")
+        # Add spelling test for 5th Grade English (both simple and moderate words)
+            english_spelling_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Spelling Test")
             english_spelling_topic.save()
             Lesson(topic_id=english_spelling_topic.id, title=f"Spelling Practice (Grade {grade})",
                    content="""Practice your spelling skills by filling in the missing letters or choosing the correct spelling.""").save()
@@ -254,9 +250,8 @@ def seed_initial_data():
                 Question(topic_id=english_spelling_topic.id, question_type="fill_in_the_blank",
                          prompt=prompt, correct_answer=word).save()
 
-                # Add English Grammar questions for 5th Grade
-        if grade == 5:
-            english_grammar_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Grammar Practice")
+    # Add English Grammar questions for 5th Grade
+            english_grammar_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Grammar Practice")
             english_grammar_topic.save()
             Lesson(topic_id=english_grammar_topic.id, title=f"Grammar Fundamentals (Grade {grade})",
                    content="""This lesson covers fundamental grammar concepts, sentence structure, punctuation, and capitalization.""").save()
