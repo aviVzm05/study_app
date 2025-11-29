@@ -8,10 +8,10 @@ from PyQt6.QtTest import QTest
 from PyQt6.QtCore import Qt, QTimer
 from src.ui.english_exercise_view import EnglishExerciseView
 from src.models.models import Lesson, Student
-from services.llm_service import LLMService
-from services.data_service import DataService
-from services.adaptive_learning_service import AdaptiveLearningService
-from services.database import execute_query, create_tables # For clearing test data and creating tables
+from src.services.llm_service import LLMService
+from src.services.data_service import DataService
+from src.services.adaptive_learning_service import AdaptiveLearningService
+from src.services.database import execute_query, create_tables # For clearing test data and creating tables
 
 # Sample LLM responses for different scenarios, now as lists of 20 questions
 MOCK_LLM_QUESTION_BEGINNER_LIST = json.dumps([

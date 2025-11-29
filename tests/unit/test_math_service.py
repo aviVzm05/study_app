@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from services.math_service import MathService
-from models.models import Lesson, Question, Topic
+from src.services.math_service import MathService
+from src.models.models import Lesson, Question, Topic
 
 @pytest.fixture
 def mock_models():

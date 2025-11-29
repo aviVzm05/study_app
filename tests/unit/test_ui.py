@@ -4,7 +4,7 @@ from PyQt6.QtTest import QTest
 from PyQt6.QtCore import Qt
 from unittest.mock import MagicMock, patch
 from src.ui.english_exercise_view import EnglishExerciseView
-from services.llm_service import LLMService
+from src.services.llm_service import LLMService
 
 # Sample valid response from LLM, now with 20 questions
 MOCK_LLM_RESPONSE_DATA = [

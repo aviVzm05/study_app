@@ -1,8 +1,8 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from services.adaptive_learning_service import AdaptiveLearningService
-from services.data_service import DataService
-from models.models import Student, PerformanceHistory
+from src.services.adaptive_learning_service import AdaptiveLearningService
+from src.services.data_service import DataService
+from src.models.models import Student, PerformanceHistory
 
 @pytest.fixture
 def mock_student():

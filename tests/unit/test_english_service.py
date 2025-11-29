@@ -1,7 +1,7 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from services.english_service import EnglishService
-from models.models import Lesson, Question, Topic
+from src.services.english_service import EnglishService
+from src.models.models import Lesson, Question, Topic
 
 @pytest.fixture
 def mock_models():

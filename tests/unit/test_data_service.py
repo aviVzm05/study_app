@@ -1,9 +1,9 @@
 import pytest
 import sqlite3
 from unittest.mock import patch, MagicMock
-from services.data_service import DataService
-from models.models import Student, QuizSession, PerformanceHistory
-from services.database import get_db_connection, close_db_connection, execute_query, create_tables # Import create_tables
+from src.services.data_service import DataService
+from src.models.models import Student, QuizSession, PerformanceHistory
+from src.services.database import get_db_connection, close_db_connection, execute_query, create_tables # Import create_tables
 from pathlib import Path
 
 @pytest.fixture(autouse=True)

@@ -3,7 +3,7 @@ import os
 import json
 from unittest.mock import patch, MagicMock
 import time # Import time for patching sleep
-from services.llm_service import LLMService
+from src.services.llm_service import LLMService
 
 # Sample valid response from LLM
 MOCK_LLM_RESPONSE_TEXT = json.dumps([
