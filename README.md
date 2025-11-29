@@ -11,6 +11,7 @@ This is a desktop learning application for students in Grade 5, focusing on Math
 - **English Writing Practice**: Exercises for Grade 5 English, including Nouns, Spelling Tests (simple and moderate words), and Grammar Practice (fundamentals, punctuation, capitalization), with immediate feedback.
 - **Offline Accessibility**: All learning content and progress tracking are available without an internet connection.
 - **Progress Tracking**: Local storage of user progress for each topic.
+- **Dynamic LLM-Generated Questions**: Questions are dynamically generated using a Large Language Model (LLM) to personalize learning, assess student performance, and provide adaptive educational content.
 
 ---
 
@@ -20,6 +21,7 @@ This is a desktop learning application for students in Grade 5, focusing on Math
 - **GUI Framework**: PyQt6
 - **Database**: SQLite (local, file-based)
 - **Testing**: pytest
+- **LLM Integration**: Used for dynamic question generation and adaptive learning.
 
 ---
 
@@ -96,6 +98,7 @@ pytest
 │   │   ├── english_service.py # Fetch English lessons/questions
 │   │   ├── english_validation.py # English grammar/spelling validation
 │   │   ├── logging_service.py # Application logging
+│   │   ├── llm_service.py    # Handles interactions with the Large Language Model for dynamic question generation and adaptive content
 │   │   ├── math_service.py # Fetch Math lessons/questions
 │   │   └── math_validation.py # Math answer validation
 │   ├── ui/
