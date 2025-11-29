@@ -130,7 +130,8 @@ class MathLessonView(QWidget):
             llm_prompt_context = {
                 "user_level": self.current_difficulty_band,
                 "topic": topic,
-                "additional_instructions": "Generate clear, concise, and educational questions. Ensure questions are not ambiguous and have a single correct answer. Avoid questions that require subjective interpretation."
+                "num_options": 4, # Explicitly request 4 options for multiple-choice questions
+                "additional_instructions": "Generate clear, concise, and educational multiple-choice questions with exactly {num_options} possible answers. Ensure questions are not ambiguous and have a single correct answer. Avoid questions that require subjective interpretation."
             }
 
             questions = LLMService.generate_question(
@@ -139,7 +140,6 @@ class MathLessonView(QWidget):
                 num_questions=20, # Request 20 questions
                 context_history=llm_prompt_context # Pass the refined prompt context
             )
-            logger.debug(f"LLMService generated questions for Math: {questions}") # Debugging line
             if questions:
                 self.llm_questions_data.extend(questions)
                 self.display_current_question()
@@ -163,7 +163,6 @@ class MathLessonView(QWidget):
             self.question_prompt_label.setText(f"Question {self.current_question_index + 1}/{len(self.llm_questions_data)}: {question.get('question_text', 'No question text.')}")
             
             possible_answers = question.get("possible_answers", [])
-            logger.debug(f"Possible answers for Math question {self.current_question_index}: {possible_answers}") # Debugging line
             
             if possible_answers:
                 self.options_container_widget.show() # Show radio button container
