@@ -98,10 +98,13 @@ class KidsLearningApp(QWidget):
                 return
 
             if subject.name == "Mathematics":
-                # lesson, questions = self.math_service.get_lesson_and_questions_for_topic(selected_topic_id) # Old approach
-                # self.math_lesson_view.set_lesson_data(lesson, questions) # Old approach
-                self.stacked_widget.setCurrentWidget(self.math_lesson_view) # Keep for now
-                # QMessageBox.information(self, "Math Not Implemented", "Math subject will use the old approach for now.")
+                lesson = Lesson.find_by_id(selected_topic_id) # Need to fetch lesson data
+                if not lesson:
+                    QMessageBox.warning(self, "Lesson Error", "Lesson for selected topic not found.")
+                    return
+                self.math_lesson_view.set_lesson_data(lesson)
+                self.math_lesson_view.student_id = self.current_student_id # Pass student ID to the view
+                self.stacked_widget.setCurrentWidget(self.math_lesson_view)
             elif subject.name == "English":
                 # For English, use the new LLM-based approach
                 # lesson, questions = self.english_service.get_lesson_and_questions_for_topic(selected_topic_id) # Removed
