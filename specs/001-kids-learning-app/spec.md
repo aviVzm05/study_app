@@ -55,6 +55,15 @@ As a student, I want to access all my math and English lessons and practice exer
 
 ---
 
+## Clarifications
+
+### Session 2025-11-29
+- Q: How should user progress be saved? → A: Local, Anonymous Profile. (Assumed Recommended)
+- Q: What is the initial content scope for the MVP? → A: One Topic per Subject/Grade. (Assumed Recommended)
+- Q: What is the expected complexity for offline English validation? → A: Basic Grammar Rules. (Assumed Recommended)
+
+---
+
 ### Edge Cases
 
 - What happens if a student tries to access a grade level (e.g., Grade 11) that is not supported?
@@ -72,9 +81,9 @@ As a student, I want to access all my math and English lessons and practice exer
 - **FR-005**: All exercises MUST follow a "Present-Engage-Validate-Guide" interaction model.
 - **FR-006**: The core learning content and functionality MUST be fully available for offline use.
 - **FR-007**: The application MUST be designed with a modular architecture to allow for future integration with AI services for dynamic content.
-- **FR-008**: The system MUST save a user's progress. [NEEDS CLARIFICATION: How should user progress be saved? Is a simple profile with just the grade enough, or do we need user accounts (e.g., username/password) to track progress across sessions and devices?]
-- **FR-009**: The application MUST contain a pre-populated, local database of lessons and questions for the initial content. [NEEDS CLARIFICATION: For the MVP, what is the specific, detailed list of topics and sub-topics for each subject (Maths and English) for each grade (5-10)?]
-- **FR-010**: The system MUST provide validation for English sentence structure. [NEEDS CLARIFICATION: What is the expected level of sophistication for the offline validation of English sentences? Should it be simple pattern/keyword matching, or a more advanced rules-based engine?]
+- **FR-008**: The system MUST save a user's progress to a local, anonymous profile on the device. Progress and scores are tied to the device and do not require a user account.
+- **FR-009**: The application MUST contain a pre-populated, local database of lessons and questions for the initial content. For the MVP, this will be limited to ONE topic per subject for each grade (5-10).
+- **FR-010**: The system MUST provide validation for English sentence structure. For the MVP, this will be limited to checking spelling and a basic, fixed set of grammatical rules (e.g., subject-verb agreement).
 
 ### Key Entities *(include if feature involves data)*
 
