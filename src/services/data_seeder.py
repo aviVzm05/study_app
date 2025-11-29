@@ -37,18 +37,7 @@ def seed_initial_data():
     Question(topic_id=math_decimals_topic.id, question_type="multiple_choice",
                          prompt="Which is greater: 0.2 or 0.02?", options='["0.2", "0.02"]',
                          correct_answer="0.2").save()
-    # Existing English Topic: Nouns
-    english_nouns_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Nouns")
-    english_nouns_topic.save()
-    Lesson(topic_id=english_nouns_topic.id, title=f"Exploring Nouns (Grade {grade})",
-                         content="""A noun is a word that names something: a person, place, thing, or idea...""").save()
-    # English Questions for Nouns
-    Question(topic_id=english_nouns_topic.id, question_type="sentence_construction",
-                         prompt="Write a sentence using a common noun.", correct_answer="[VALIDATION_RULE: common noun present]").save()
-    Question(topic_id=english_nouns_topic.id, question_type="sentence_construction",
-                         prompt="Write a sentence that includes two proper nouns.", correct_answer="[VALIDATION_RULE: two proper nouns present]").save()
-    Question(topic_id=english_nouns_topic.id, question_type="sentence_construction",
-                         prompt="Write a sentence about your favorite animal.", correct_answer="[VALIDATION_RULE: describes favorite animal]").save()
+
     # Integers Topic
     math_integers_topic = Topic(subject_id=math_subject.id, grade=grade, name="Math - Grade 5 Integers")
     math_integers_topic.save()
@@ -199,6 +188,17 @@ def seed_initial_data():
     Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
            prompt="Convert the mixed number 1 1/2 to an improper fraction. ____",
            correct_answer="3/2").save()
+    
+    # Existing English Topic: Forming Sentences
+    english_sentences_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Forming Sentences")
+    english_sentences_topic.save()
+    Lesson(topic_id=english_sentences_topic.id, title=f"Exploring Sentence Formation (Grade {grade})",
+                         content="""Forming sentences is a fundamental skill in English. It involves combining words to express a complete thought...""").save()
+    # English Questions for Sentence Formation
+    Question(topic_id=english_sentences_topic.id, question_type="multiple_choice",
+              prompt="Which of the following is a complete sentence?", options='["Runs fast", "The cat sits on the mat", "Blue sky"]',
+              correct_answer="The cat sits on the mat").save()
+    
     # Add spelling test for 5th Grade English (both simple and moderate words)
     english_spelling_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Spelling Test")
     english_spelling_topic.save()
@@ -277,6 +277,20 @@ def seed_initial_data():
     Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
            prompt="A _______ is used to introduce a list or further explanation, while a semicolon is used to connect related independent clauses.",
            correct_answer="colon").save()
+    
+    # new topic for english subject
+    # Existing English Topic: synomyms and antonyms
+    english_synonyms_topic = Topic(subject_id=english_subject.id, grade=grade, name="English - Grade 5 Synonyms and Antonyms")
+    english_synonyms_topic.save()
+    Lesson(topic_id=english_synonyms_topic.id, title=f"Understanding Synonyms and Antonyms (Grade {grade})",
+                         content="""Synonyms are words that have similar meanings, while antonyms are words with opposite meanings...""").save()
+    # English Questions for Synonyms and Antonyms
+    Question(topic_id=english_synonyms_topic.id, question_type="multiple_choice",
+              prompt="What is a synonym for 'happy'?", options='["sad", "joyful", "angry"]',
+              correct_answer="joyful").save()
+    Question(topic_id=english_synonyms_topic.id, question_type="multiple_choice",
+              prompt="What is an antonym for 'big'?", options='["large", "huge", "small"]',
+              correct_answer="small").save()     
     print("Initial data seeded successfully.")
 
 if __name__ == '__main__':
