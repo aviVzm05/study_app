@@ -32,25 +32,24 @@ def seed_initial_data():
                              content="""Decimals are a way of writing numbers that are not whole numbers. They are based on powers of ten...""")
         math_lesson.save()
 
-        # Math Question (example for decimals)
-        math_question = Question(topic_id=math_topic.id, question_type="multiple_choice",
+        # Math Questions (examples for decimals)
+        Question(topic_id=math_topic.id, question_type="multiple_choice",
                                  prompt="What is 0.5 as a fraction?", options='["1/2", "1/4", "1/5"]',
-                                 correct_answer="1/2")
-        math_question.save()
+                                 correct_answer="1/2").save()
+        Question(topic_id=math_topic.id, question_type="multiple_choice",
+                                 prompt="Convert 0.75 to a fraction.", options='["3/4", "1/4", "7/10"]',
+                                 correct_answer="3/4").save()
+        Question(topic_id=math_topic.id, question_type="multiple_choice",
+                                 prompt="Which is greater: 0.2 or 0.02?", options='["0.2", "0.02"]',
+                                 correct_answer="0.2").save()
 
-        # English Topic: Nouns (example)
-        english_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Nouns")
-        english_topic.save()
-
-        # English Lesson
-        english_lesson = Lesson(topic_id=english_topic.id, title=f"Exploring Nouns (Grade {grade})",
-                                content="""A noun is a word that names something: a person, place, thing, or idea...""")
-        english_lesson.save()
-
-        # English Question (example for nouns)
-        english_question = Question(topic_id=english_topic.id, question_type="sentence_construction",
-                                   prompt="Write a sentence using a common noun.", correct_answer="[VALIDATION_RULE: common noun present]")
-        english_question.save()
+        # English Questions (examples for nouns)
+        Question(topic_id=english_topic.id, question_type="sentence_construction",
+                                   prompt="Write a sentence using a common noun.", correct_answer="[VALIDATION_RULE: common noun present]").save()
+        Question(topic_id=english_topic.id, question_type="sentence_construction",
+                                   prompt="Write a sentence that includes two proper nouns.", correct_answer="[VALIDATION_RULE: two proper nouns present]").save()
+        Question(topic_id=english_topic.id, question_type="sentence_construction",
+                                   prompt="Write a sentence about your favorite animal.", correct_answer="[VALIDATION_RULE: describes favorite animal]").save()
         
     print("Initial data seeded successfully.")
 

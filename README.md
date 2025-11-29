@@ -7,8 +7,8 @@ This is a desktop learning application for students in grades 5-10, focusing on 
 ## Features
 
 - **Grade and Topic Selection**: Users can select their grade and choose between Math and English topics.
-- **Math Skill Building**: Interactive lessons and practice problems for various math concepts (e.g., Decimals).
-- **English Writing Practice**: Exercises for grammar, spelling, and sentence construction with immediate feedback.
+- **Math Skill Building**: Interactive lessons and practice problems for various math concepts (e.g., Decimals). *Note: For MVP, each math topic currently includes one practice question.*
+- **English Writing Practice**: Exercises for grammar, spelling, and sentence construction with immediate feedback. *Note: For MVP, each English topic currently includes one writing prompt.*
 - **Offline Accessibility**: All learning content and progress tracking are available without an internet connection.
 - **Progress Tracking**: Local storage of user progress for each topic.
 
