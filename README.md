@@ -29,8 +29,8 @@ This is a desktop learning application for students in Grade 5, focusing on Math
 
 1.  **Clone the repository**:
     ```bash
-    git clone <repository-url>
-    cd <repository-directory>
+    git clone https://github.com/aviVzm05/study_app.git
+    cd study_app
     ```
 
 2.  **Create and activate a virtual environment**:
