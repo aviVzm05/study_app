@@ -1,14 +1,14 @@
 # Kids Learning App
 
-This is a desktop learning application for students in grades 5-10, focusing on Mathematics and English. The application is built using Python with the PyQt6 GUI framework and uses a local SQLite database for offline content storage.
+This is a desktop learning application for students in Grade 5, focusing on Mathematics and English. The application is built using Python with the PyQt6 GUI framework and uses a local SQLite database for offline content storage.
 
 ---
 
 ## Features
 
-- **Grade and Topic Selection**: Users can select their grade and choose between Math and English topics.
-- **Math Skill Building**: Interactive lessons and practice problems for various math concepts (e.g., Decimals). *Note: For MVP, each math topic currently includes one practice question.*
-- **English Writing Practice**: Exercises for grammar, spelling, and sentence construction with immediate feedback. *Note: For MVP, each English topic currently includes one writing prompt.*
+- **Grade and Topic Selection**: Users can select from various Math and English topics available exclusively for Grade 5.
+- **Math Skill Building**: Interactive lessons and practice problems for Grade 5 Math, covering Decimals, Number System & Operations (Word Problems, LCM, HCF, Mean, Median, Mode, Multiplication, Division), Integers, Rational Numbers, Geometry, Algebra, and Data Handling.
+- **English Writing Practice**: Exercises for Grade 5 English, including Nouns, Spelling Tests (simple and moderate words), and Grammar Practice (fundamentals, punctuation, capitalization), with immediate feedback.
 - **Offline Accessibility**: All learning content and progress tracking are available without an internet connection.
 - **Progress Tracking**: Local storage of user progress for each topic.
 
@@ -53,7 +53,7 @@ This is a desktop learning application for students in grades 5-10, focusing on 
 
 ## Database Initialization and Seeding
 
-The application uses a local SQLite database (`database/content.db`). The schema is automatically created and initial data (1 topic per subject per grade for MVP) is seeded when the application starts for the first time.
+The application uses a local SQLite database (`database/content.db`). The schema is automatically created and initial data (all content exclusively for Grade 5) is seeded when the application starts for the first time.
 
 ---
 
