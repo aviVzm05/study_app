@@ -1,0 +1,14 @@
+# Python-specific
+__pycache__/
+*.pyc
+.venv/
+venv/
+dist/
+*.egg-info/
+
+# Universal
+.DS_Store
+*.tmp
+*.swp
+.vscode/
+.idea/

@@ -22,11 +22,11 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Create project directories: `src/models/`, `src/services/`, `src/ui/`, `tests/integration/`, `tests/unit/`, `database/`
-- [ ] T002 Initialize Python project with a virtual environment in the project root.
-- [ ] T003 [P] Create `requirements.txt` with `PyQt6` and `pytest` in the project root.
-- [ ] T004 Install core dependencies from `requirements.txt`.
-- [ ] T005 [P] Configure `pytest` (e.g., `pytest.ini` if needed).
+- [X] T001 Create project directories: `src/models/`, `src/services/`, `src/ui/`, `tests/integration/`, `tests/unit/`, `database/`
+- [X] T002 Initialize Python project with a virtual environment in the project root.
+- [X] T003 [P] Create `requirements.txt` with `PyQt6` and `pytest` in the project root.
+- [X] T004 Install core dependencies from `requirements.txt`.
+- [X] T005 [P] Configure `pytest` (e.g., `pytest.ini` if needed).
 
 ---
 
@@ -36,11 +36,11 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T006 Create `src/main.py` for the application entry point.
-- [ ] T007 Implement base SQLite database connection and utility functions in `src/services/database.py`.
-- [ ] T008 Implement database schema creation from `data-model.md` in `src/models/schema.py`.
-- [ ] T009 Implement base data models for `subjects`, `topics`, `lessons`, `questions`, and `progress` tables (e.g., ORM models or direct SQL wrappers) in `src/models/`.
-- [ ] T010 Implement database seeding logic for initial content (1 topic per subject per grade for MVP) in `src/services/data_seeder.py`.
+- [X] T006 Create `src/main.py` for the application entry point.
+- [X] T007 Implement base SQLite database connection and utility functions in `src/services/database.py`.
+- [X] T008 Implement database schema creation from `data-model.md` in `src/models/schema.py`.
+- [X] T009 Implement base data models for `subjects`, `topics`, `lessons`, `questions`, and `progress` tables (e.g., ORM models or direct SQL wrappers) in `src/models/`.
+- [X] T010 Implement database seeding logic for initial content (1 topic per subject per grade for MVP) in `src/services/data_seeder.py`.
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
