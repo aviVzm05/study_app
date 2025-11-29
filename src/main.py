@@ -5,9 +5,10 @@ from ui.math_lesson_view import MathLessonView
 from ui.english_exercise_view import EnglishExerciseView
 from models.schema import create_schema
 from services.data_seeder import seed_initial_data
-from services.math_service import MathService
-from services.english_service import EnglishService
 from services.logging_service import setup_logging, log_event
+from services.adaptive_learning_service import AdaptiveLearningService
+from services.data_service import DataService
+from models.models import Student, Topic, Subject, Lesson
 import sys
 
 class KidsLearningApp(QWidget):
@@ -15,10 +16,25 @@ class KidsLearningApp(QWidget):
         super().__init__()
         self.setWindowTitle("Kids Learning App")
         self.setGeometry(100, 100, 800, 600)
-        self.math_service = MathService()
-        self.english_service = EnglishService() # Initialize English service
+        # self.math_service = MathService() # Removed
+        # self.english_service = EnglishService() # Removed
+        self.current_student_id = None # To store the ID of the current student
         self.init_db_and_data()
+        self._ensure_default_student() # Ensure a default student exists
         self.init_ui()
+
+    def _ensure_default_student(self):
+        """Ensures a default student profile exists, creating one if necessary."""
+        # For simplicity, we'll use student ID 1 as the default.
+        # In a real app, this would involve proper user management.
+        student = DataService.get_student_profile(1)
+        if not student:
+            student = DataService.create_student_profile(nickname="GuestKid")
+            log_event('info', f"Created default student: {student.nickname} (ID: {student.id})")
+        else:
+            log_event('info', f"Using existing default student: {student.nickname} (ID: {student.id})")
+        self.current_student_id = student.id
+
 
     def init_db_and_data(self):
         try:
@@ -83,17 +99,31 @@ class KidsLearningApp(QWidget):
                 return
 
             if subject.name == "Mathematics":
-                lesson, questions = self.math_service.get_lesson_and_questions_for_topic(selected_topic_id)
-                self.math_lesson_view.set_lesson_data(lesson, questions)
-                self.stacked_widget.setCurrentWidget(self.math_lesson_view)
+                # lesson, questions = self.math_service.get_lesson_and_questions_for_topic(selected_topic_id) # Old approach
+                # self.math_lesson_view.set_lesson_data(lesson, questions) # Old approach
+                self.stacked_widget.setCurrentWidget(self.math_lesson_view) # Keep for now
+                QMessageBox.information(self, "Math Not Implemented", "Math subject will use the old approach for now.")
             elif subject.name == "English":
-                lesson, questions = self.english_service.get_lesson_and_questions_for_topic(selected_topic_id)
-                self.english_exercise_view.set_lesson_data(lesson, questions)
+                # For English, use the new LLM-based approach
+                # lesson, questions = self.english_service.get_lesson_and_questions_for_topic(selected_topic_id) # Removed
+                
+                # We only need to set the lesson data in the view.
+                # The view itself will handle loading questions dynamically using LLMService.
+                # We also pass the student_id to the view for performance tracking.
+                lesson = Lesson.find_by_id(selected_topic_id) # Need to fetch lesson data
+                if not lesson:
+                    QMessageBox.warning(self, "Lesson Error", "Lesson for selected topic not found.")
+                    return
+
+                self.english_exercise_view.set_lesson_data(lesson)
+                self.english_exercise_view.student_id = self.current_student_id # Pass student ID to the view
                 self.stacked_widget.setCurrentWidget(self.english_exercise_view)
             else:
                 QMessageBox.warning(self, "Selection Error", "Unsupported subject type for learning session.")
         except Exception as e:
+            log_event('critical', f"An unexpected error occurred in start_learning_session: {e}")
             QMessageBox.critical(self, "Application Error", f"An unexpected error occurred: {e}")
+
 
 if __name__ == "__main__":
     setup_logging()
