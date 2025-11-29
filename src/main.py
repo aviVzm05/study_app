@@ -14,7 +14,7 @@ class KidsLearningApp(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Kids Learning App")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 600, 400)
         # self.math_service = MathService() # Removed
         # self.english_service = EnglishService() # Removed
         self.current_student_id = None # To store the ID of the current student

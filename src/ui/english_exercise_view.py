@@ -77,7 +77,7 @@ class EnglishExerciseView(QWidget):
         self.exercise_widget.hide()
         self.layout.addWidget(self.exercise_widget)
 
-        self.layout.addStretch()
+
 
     def _clear_options(self):
         """Clears all radio buttons from the options layout."""

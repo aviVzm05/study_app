@@ -40,7 +40,7 @@ class TopicSelectionView(QWidget):
         self.back_button.setObjectName("BackButton")
         self.layout.addWidget(self.back_button)
 
-        self.layout.addStretch()
+
 
     def load_subjects(self):
         self.subject_combo.clear()

@@ -77,7 +77,7 @@ class MathLessonView(QWidget):
         self.question_widget.hide() # Hide question widget initially
         self.layout.addWidget(self.question_widget)
 
-        self.layout.addStretch()
+
 
     def _clear_options(self):
         """Clears all radio buttons from the options layout."""
