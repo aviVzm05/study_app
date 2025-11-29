@@ -24,4 +24,6 @@ class GradeSelectionView(QWidget):
         self.select_button.setObjectName("SelectButton") # For styling
         self.layout.addWidget(self.select_button)
 
+        self.layout.addStretch() # Pushes content to the top
+
 
