@@ -90,9 +90,9 @@
 
 ### Implementation for User Story 3
 
-- [ ] T021 [US3] Verify all content loading mechanisms use only the local SQLite database.
-- [ ] T022 [US3] Implement local progress saving and loading functionality in `src/services/progress_service.py`.
-- [ ] T023 [US3] Ensure UI handles (and does not attempt) any online features gracefully in `src/main.py` and relevant UI views.
+- [X] T021 [US3] Verify all content loading mechanisms use only the local SQLite database.
+- [X] T022 [US3] Implement local progress saving and loading functionality in `src/services/progress_service.py`.
+- [X] T023 [US3] Ensure UI handles (and does not attempt) any online features gracefully in `src/main.py` and relevant UI views.
 
 **Checkpoint**: All user stories should now be independently functional
 
