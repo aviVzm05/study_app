@@ -101,7 +101,7 @@ class KidsLearningApp(QWidget):
                 # lesson, questions = self.math_service.get_lesson_and_questions_for_topic(selected_topic_id) # Old approach
                 # self.math_lesson_view.set_lesson_data(lesson, questions) # Old approach
                 self.stacked_widget.setCurrentWidget(self.math_lesson_view) # Keep for now
-                QMessageBox.information(self, "Math Not Implemented", "Math subject will use the old approach for now.")
+                # QMessageBox.information(self, "Math Not Implemented", "Math subject will use the old approach for now.")
             elif subject.name == "English":
                 # For English, use the new LLM-based approach
                 # lesson, questions = self.english_service.get_lesson_and_questions_for_topic(selected_topic_id) # Removed
