@@ -219,7 +219,31 @@ def seed_initial_data():
                      prompt="Convert the mixed number 1 1/2 to an improper fraction. ____",
                      correct_answer="3/2").save()
 
-        print("Initial data seeded successfully.")
+            # Add spelling test for 5th Grade English
+        if grade == 5:
+            english_spelling_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Spelling Test")
+            english_spelling_topic.save()
+            Lesson(topic_id=english_spelling_topic.id, title=f"Spelling Practice (Grade {grade})",
+                   content="""Practice your spelling skills by filling in the missing letters or choosing the correct spelling.""").save()
+
+            spelling_words = [
+                "apple", "table", "chair", "happy", "smile", "dream", "sleep", "write", "listen", "garden",
+                "flower", "bright", "friend", "family", "brother", "sister", "always", "clever", "quick", "often",
+                "watch", "learn", "school", "study", "pencil", "paper", "book", "story", "music", "dance",
+                "paint", "build", "create", "share", "clean", "small", "large", "funny", "quiet", "proud",
+                "kind", "heart", "light", "night", "early", "ready", "travel", "happy", "wonder", "magic",
+                "picnic", "cookie", "yellow", "purple", "orange", "green", "blue", "brown", "black", "white",
+                "seven", "eight", "nine", "ten"
+            ]
+            import random
+            for word in spelling_words:
+                missing_index = random.randint(0, len(word) - 1)
+                prompt_list = list(word)
+                prompt_list[missing_index] = '_'
+                prompt = f"Fill in the missing letter: {''.join(prompt_list)}"
+                Question(topic_id=english_spelling_topic.id, question_type="fill_in_the_blank",
+                         prompt=prompt, correct_answer=word).save()
+    print("Initial data seeded successfully.")
 
 if __name__ == '__main__':
     seed_initial_data()
