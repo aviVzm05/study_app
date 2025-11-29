@@ -25,6 +25,7 @@ class MathLessonView(QWidget):
 
         self.lesson_content_display = QTextEdit()
         self.lesson_content_display.setReadOnly(True)
+        self.lesson_content_display.setFixedHeight(50) # Set a fixed height for a single line of content
         self.layout.addWidget(self.lesson_content_display)
 
         self.start_quiz_button = QPushButton("Start Dynamic Math Quiz")
