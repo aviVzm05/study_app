@@ -254,6 +254,62 @@ def seed_initial_data():
                 Question(topic_id=english_spelling_topic.id, question_type="fill_in_the_blank",
                          prompt=prompt, correct_answer=word).save()
 
+                # Add English Grammar questions for 5th Grade
+        if grade == 5:
+            english_grammar_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Grammar Practice")
+            english_grammar_topic.save()
+            Lesson(topic_id=english_grammar_topic.id, title=f"Grammar Fundamentals (Grade {grade})",
+                   content="""This lesson covers fundamental grammar concepts, sentence structure, punctuation, and capitalization.""").save()
+
+            # --- Section 1: Grammar Fundamentals (Q1-Q10) ---
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="A _______ is a group of words that expresses a complete thought or idea.",
+                     correct_answer="sentence").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="The part of the sentence that tells us who or what the sentence is about is the:",
+                     options='["verb", "adjective", "subject", "adverb"]', correct_answer="subject").save()
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="A _______ is a word that describes an action or state of being.",
+                     correct_answer="verb").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="A word that represents a person, place, thing, or idea is a:",
+                     options='["verb", "noun", "adjective", "pronoun"]', correct_answer="noun").save()
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="An _______ is a word that describes or modifies a noun.",
+                     correct_answer="adjective").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="A word that describes or modifies a verb, adjective, or another adverb is an:",
+                     options='["noun", "adjective", "adverb", "conjunction"]', correct_answer="adverb").save()
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="A _______ is a word that connects words, phrases, or clauses in a sentence.",
+                     correct_answer="conjunction").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="A word that shows the relationship between a noun and other words in a sentence is a:",
+                     options='["verb", "preposition", "adverb", "pronoun"]', correct_answer="preposition").save()
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="A _______ is a word used in place of a noun to avoid repetition.",
+                     correct_answer="pronoun").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="The noun or pronoun that receives the action of the verb in a sentence is a:",
+                     options='["subject", "direct object", "predicate", "adverb"]', correct_answer="direct object").save()
+
+            # --- Section 3: Punctuation and Capitalization (Q16-Q20) ---
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="_______ are used to separate items in a list, set off introductory phrases, and connect independent clauses.",
+                     correct_answer="Commas").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="A hyphen is used to join words, while an _______ is used to set off information within a sentence.",
+                     options='["comma", "period", "em dash", "colon"]', correct_answer="em dash").save()
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="Apostrophes are used to replace missing letters in _______, like 'can't' for 'cannot'.",
+                     correct_answer="contractions").save()
+            Question(topic_id=english_grammar_topic.id, question_type="multiple_choice",
+                     prompt="You should capitalize the first letter of a word at the beginning of a sentence, with proper nouns, and in _______.",
+                     options='["verbs", "adjectives", "titles", "adverbs"]', correct_answer="titles").save()
+            Question(topic_id=english_grammar_topic.id, question_type="fill_in_the_blank",
+                     prompt="A _______ is used to introduce a list or further explanation, while a semicolon is used to connect related independent clauses.",
+                     correct_answer="colon").save()
+
         print("Initial data seeded successfully.")
 
 if __name__ == '__main__':
