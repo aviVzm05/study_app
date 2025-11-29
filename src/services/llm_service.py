@@ -42,7 +42,7 @@ class LLMService:
         return cls._model
 
     @classmethod
-    def generate_question(cls, subject: str, difficulty_band: str, num_questions: int = 1, context_history: str = None) -> list:
+    def generate_question(cls, subject: str, difficulty_band: str, num_questions: int = 1, context_history: dict = None) -> list:
         """
         Generates questions using the LLM based on subject, difficulty, and optional context.
         Returns a list of dictionaries, each representing a question.
@@ -51,12 +51,32 @@ class LLMService:
         if not model:
             raise RuntimeError("LLMService is not initialized.")
 
+        # Extract context variables
+        topic = context_history.get("topic", "") if context_history else ""
+        additional_instructions = context_history.get("additional_instructions", "") if context_history else ""
+        num_options = context_history.get("num_options", 0) if context_history else 0
+
         prompt_parts = [
             f"Generate {num_questions} {subject} questions suitable for a {difficulty_band} level student. ",
-            "Each question should include a question_text, an array of possible_answers (if multiple choice, otherwise empty), the correct_answer, a detailed explanation for the correct answer, the subject, and the difficulty_band. "
-            f"For English, we want the user to be quized on grammer, comprehension and vocabulary and spellings at the {difficulty_band} level. ",
-            "For Math, the users are at level of above 5th grade in India, so questions should be tailored accordingly. ",
-            "Respond ONLY with a JSON array of question objects. Example format: ",
+        ]
+
+        if topic:
+            prompt_parts.append(f"The questions should be specifically about the topic: {topic}. ")
+
+        prompt_parts.append("Each question should include a question_text, an array of possible_answers (if multiple choice, otherwise empty), the correct_answer, a detailed explanation for the correct answer, the subject, and the difficulty_band. ")
+        
+        if subject == "English":
+            prompt_parts.append(f"For English, we want the user to be quized on grammer, comprehension and vocabulary and spellings at the {difficulty_band} level. ")
+        elif subject == "Math":
+            prompt_parts.append("For Math, the users are at level of above 5th grade in India, so questions should be tailored accordingly. ")
+            if num_options > 0:
+                prompt_parts.append(f"Ensure that each question has exactly {num_options} distinct possible answers. ")
+
+        if additional_instructions:
+            prompt_parts.append(f"{additional_instructions} ")
+
+        prompt_parts.append("Respond ONLY with a JSON array of question objects. Example format: ")
+        prompt_parts.append(
             json.dumps([
                 {
                     "question_text": "What is mean and median of the dataset [2, 3, 5, 7, 11]?",
@@ -91,10 +111,7 @@ class LLMService:
                     "difficulty_band": "Beginner"
                 }
             ])
-        ]
-        
-        if context_history:
-            prompt_parts.append(f"Consider the student's performance history: {context_history}. Adapt questions accordingly.")
+        ) # Added closing parenthesis for json.dumps and prompt_parts.append
 
         full_prompt = "".join(prompt_parts)
         logger.info(f"Sending prompt to LLM: {full_prompt[:200]}...") # Log first 200 chars of prompt
