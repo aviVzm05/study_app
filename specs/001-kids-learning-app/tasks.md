@@ -73,10 +73,10 @@
 
 ### Implementation for User Story 2
 
-- [ ] T017 [P] [US2] Implement service for fetching English lessons and writing prompts in `src/services/english_service.py`.
-- [ ] T018 [US2] Implement UI for English writing exercises in `src/ui/english_exercise_view.py`.
-- [ ] T019 [US2] Implement offline validation for English grammar and spelling (basic rules) in `src/services/english_validation.py`.
-- [ ] T020 [US2] Integrate English learning flow into `src/main.py` and connect UI views.
+- [X] T017 [P] [US2] Implement service for fetching English lessons and writing prompts in `src/services/english_service.py`.
+- [X] T018 [US2] Implement UI for English writing exercises in `src/ui/english_exercise_view.py`.
+- [X] T019 [US2] Implement offline validation for English grammar and spelling (basic rules) in `src/services/english_validation.py`.
+- [X] T020 [US2] Integrate English learning flow into `src/main.py` and connect UI views.
 
 **Checkpoint**: At this point, User Stories 1 AND 2 should both work independently
 
