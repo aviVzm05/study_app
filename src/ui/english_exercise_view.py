@@ -26,6 +26,10 @@ class EnglishExerciseView(QWidget):
         self.start_exercise_button.clicked.connect(self.start_exercise)
         self.layout.addWidget(self.start_exercise_button)
 
+        self.back_button = QPushButton("Back to Topics")
+        self.back_button.setObjectName("BackButton")
+        self.layout.addWidget(self.back_button)
+
         # Exercise section (hidden initially)
         self.exercise_widget = QWidget()
         self.exercise_layout = QVBoxLayout()

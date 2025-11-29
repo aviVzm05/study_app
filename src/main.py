@@ -1,5 +1,4 @@
-import sys
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QStackedWidget
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QStackedWidget, QMessageBox
 from ui.grade_selection_view import GradeSelectionView
 from ui.topic_selection_view import TopicSelectionView
 from ui.math_lesson_view import MathLessonView
@@ -9,6 +8,7 @@ from services.data_seeder import seed_initial_data
 from services.math_service import MathService
 from services.english_service import EnglishService
 from services.logging_service import setup_logging, log_event
+import sys
 
 class KidsLearningApp(QWidget):
     def __init__(self):
@@ -49,7 +49,10 @@ class KidsLearningApp(QWidget):
 
         # Connect signals
         self.grade_selection_view.select_button.clicked.connect(self.show_topic_selection)
-        self.topic_selection_view.start_button.clicked.connect(self.start_learning_session) # New method to handle both subjects
+        self.topic_selection_view.start_button.clicked.connect(self.start_learning_session)
+        self.topic_selection_view.back_button.clicked.connect(self.show_grade_selection) # Back from topics to grade
+        self.math_lesson_view.back_button.clicked.connect(self.show_topic_selection) # Back from math lesson to topics
+        self.english_exercise_view.back_button.clicked.connect(self.show_topic_selection) # Back from english exercise to topics
 
         self.show_grade_selection()
 

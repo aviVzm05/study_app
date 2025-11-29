@@ -26,6 +26,10 @@ class MathLessonView(QWidget):
         self.start_quiz_button.clicked.connect(self.start_practice)
         self.layout.addWidget(self.start_quiz_button)
 
+        self.back_button = QPushButton("Back to Topics")
+        self.back_button.setObjectName("BackButton")
+        self.layout.addWidget(self.back_button)
+
         # Question section (hidden initially)
         self.question_widget = QWidget()
         self.question_layout = QVBoxLayout()

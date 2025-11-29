@@ -37,6 +37,10 @@ class TopicSelectionView(QWidget):
         self.start_button.setObjectName("StartButton")
         self.layout.addWidget(self.start_button)
 
+        self.back_button = QPushButton("Back")
+        self.back_button.setObjectName("BackButton")
+        self.layout.addWidget(self.back_button)
+
         self.layout.addStretch()
 
     def load_subjects(self):
