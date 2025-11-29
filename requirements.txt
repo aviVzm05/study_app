@@ -1,2 +1,3 @@
 PyQt6
 pytest
+google-generativeai
