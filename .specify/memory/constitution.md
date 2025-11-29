@@ -1,50 +1,36 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+- Version change: 0.0.0 → 1.0.0
+- Reason: Initial constitution for the new project.
+- Sections Added:
+  - Core Principles
+  - Governance
+- Templates requiring updates:
+  - ✅ .specify/templates/plan-template.md
+  - ✅ .specify/templates/spec-template.md
+  - ✅ .specify/templates/tasks-template.md
+- Follow-up TODOs: None
+-->
+# Study Buddy Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Target Audience & Curriculum
+The application MUST be designed for children in India from grades 5 through 10. All content, features, and UI/UX decisions MUST be appropriate for this age group. The initial curriculum is strictly limited to Mathematics and English, focusing on foundational concepts as outlined in the project vision.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Offline-First Operation
+The core learning modules of the application MUST be fully functional without an internet connection. This requires a local database of questions, lessons, and validation logic to be bundled with the application. User progress and data MUST be stored locally and synced when a connection is available if the app is running on the web.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Interactive Learning Loop
+The primary user interaction MUST follow a "Present-Engage-Validate-Guide" loop. The application will present a question or concept, accept the user's answer or input, validate it against correct patterns, and provide constructive guidance or suggestions for improvement. This applies to both mathematical problem-solving and English grammar/spelling exercises.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Extensible & Future-Ready Architecture
+The application architecture MUST be modular and extensible to facilitate future integration with external AI/ML models (e.g., Gemini, OpenAI). API interactions and data contracts should be clearly defined and isolated from the core offline business logic to allow for seamless expansion of features, such as a dynamic question generation.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
-
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
-
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+### V. Phased Deployment
+The project will follow a phased deployment strategy. The initial deliverable is a local, standalone application for development and testing. The long-term goal is a cloud-hosted web application accessible via a browser. All development must consider this trajectory, ensuring a smooth transition between phases.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
+All development work, including feature specifications, implementation, and testing, MUST adhere to the principles outlined in this constitution. Amendments to this constitution require team consensus, documentation of the rationale, and a review of dependent project artifacts for necessary updates.
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
-
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2025-11-29 | **Last Amended**: 2025-11-29

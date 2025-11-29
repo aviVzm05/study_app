@@ -31,7 +31,11 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] **Audience & Curriculum:** Does the feature align with the target audience (grades 5-10 in India) and the core subjects (Maths, English)?
+- [ ] **Offline-First:** Does the feature work without an internet connection? Is local data storage handled correctly?
+- [ ] **Interactive Learning Loop:** Does the feature follow the "Present-Engage-Validate-Guide" model?
+- [ ] **Extensible Architecture:** Is the feature designed with modularity to support future AI integration?
+- [ ] **Phased Deployment:** Does the feature design consider both local app and future web app deployment?
 
 ## Project Structure
 
