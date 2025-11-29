@@ -20,7 +20,7 @@
 - [X] All acceptance scenarios are defined
 - [X] Edge cases are identified
 - [X] Scope is clearly bounded (pending clarification)
-- [ ] Dependencies and assumptions identified
+- [X] Dependencies and assumptions identified
 
 ## Feature Readiness
 
