@@ -2,6 +2,7 @@ import pytest
 import os
 import json
 from unittest.mock import patch, MagicMock
+import time # Import time for patching sleep
 from services.llm_service import LLMService
 
 # Sample valid response from LLM
@@ -78,17 +79,21 @@ def test_generate_question_malformed_json(mock_generative_model):
     del os.environ["GEMINI_API_KEY"]
 
 def test_generate_question_llm_error(mock_generative_model):
-    """Tests if generate_question re-raises LLM related exceptions."""
+    """Tests if generate_question re-raises LLM related exceptions after retries."""
     os.environ["GEMINI_API_KEY"] = "fake_api_key"
     LLMService._model = mock_generative_model
-    mock_generative_model.generate_content.side_effect = Exception("LLM connection error")
+    # Simulate consistent failure across all retries
+    mock_generative_model.generate_content.side_effect = [Exception("LLM connection error")] * LLMService._MAX_RETRIES
 
-    with pytest.raises(Exception, match="LLM connection error"):
-        LLMService.generate_question(subject="Math", difficulty_band="Beginner")
+    with patch('time.sleep') as mock_sleep:
+        with pytest.raises(Exception, match="LLM connection error"):
+            LLMService.generate_question(subject="Math", difficulty_band="Beginner")
+        assert mock_generative_model.generate_content.call_count == LLMService._MAX_RETRIES
+        assert mock_sleep.call_count == LLMService._MAX_RETRIES -1
     del os.environ["GEMINI_API_KEY"]
 
 def test_generate_question_retry_logic():
-    """Tests if generate_question attempts retries on failure."""
+    """Tests if generate_question attempts retries on failure and eventually succeeds."""
     os.environ["GEMINI_API_KEY"] = "fake_api_key"
     LLMService._model = None # Force re-init to ensure mock is fresh
     with patch('google.generativeai.GenerativeModel') as MockModel:
@@ -116,5 +121,5 @@ def test_generate_question_retry_exhausted():
             with pytest.raises(Exception, match="Error 1"):
                 LLMService.generate_question(subject="Math", difficulty_band="Beginner")
             assert mock_instance.generate_content.call_count == LLMService._MAX_RETRIES
-            assert mock_sleep.call_count == LLMService._MAX_RETRIES -1
+            assert mock_sleep.call_count == LLMService._MAX_RETRIES - 1
     del os.environ["GEMINI_API_KEY"]

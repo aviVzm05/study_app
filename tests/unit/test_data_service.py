@@ -3,7 +3,8 @@ import sqlite3
 from unittest.mock import patch, MagicMock
 from services.data_service import DataService
 from models.models import Student, QuizSession, PerformanceHistory
-from services.database import get_db_connection, close_db_connection, execute_query
+from services.database import get_db_connection, close_db_connection, execute_query, create_tables # Import create_tables
+from pathlib import Path
 
 @pytest.fixture(autouse=True)
 def in_memory_db():
@@ -11,50 +12,14 @@ def in_memory_db():
     conn = sqlite3.connect(":memory:")
     conn.row_factory = sqlite3.Row
     # Patch get_db_connection to return this in-memory connection
-    with patch('services.database.get_db_connection', return_value=conn):
-        # Create tables using the patched connection
-        execute_query("""
-            CREATE TABLE students (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nickname TEXT NOT NULL,
-                current_difficulty_english TEXT DEFAULT 'Beginner',
-                current_difficulty_math TEXT DEFAULT 'Beginner'
-            )
-        """)
-        execute_query("""
-            CREATE TABLE quiz_sessions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                student_id INTEGER NOT NULL,
-                start_time TEXT NOT NULL,
-                end_time TEXT,
-                subject TEXT NOT NULL,
-                difficulty_band TEXT NOT NULL,
-                overall_score REAL,
-                FOREIGN KEY (student_id) REFERENCES students (id)
-            )
-        """)
-        execute_query("""
-            CREATE TABLE performance_history (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                quiz_session_id INTEGER NOT NULL,
-                question_id INTEGER,
-                student_answer TEXT,
-                is_correct INTEGER,
-                time_taken_seconds REAL,
-                timestamp TEXT NOT NULL,
-                FOREIGN KEY (quiz_session_id) REFERENCES quiz_sessions (id),
-                FOREIGN KEY (question_id) REFERENCES questions (id)
-            )
-        """)
-        # Mocking questions table for foreign key constraint, even if not fully used
-        execute_query("""
-            CREATE TABLE questions (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                topic_id INTEGER, question_type TEXT, prompt TEXT, options TEXT, 
-                correct_answer TEXT, explanation TEXT, difficulty_band TEXT
-            )
-        """)
-        yield
+    with patch('services.database.get_db_connection', return_value=conn), \
+         patch('services.database.close_db_connection', new=MagicMock()): # Patch close to do nothing
+        # Patch DATABASE_FILE and DATABASE_DIR to prevent interaction with real files
+        with patch('services.database.DATABASE_FILE', new=Path(":memory:")):
+            with patch('services.database.DATABASE_DIR', new=Path("/mock/path")):
+                # Create tables using the patched connection
+                create_tables(conn) # Use the actual create_tables function
+                yield
     conn.close()
 
 def test_create_and_get_student_profile():
@@ -99,7 +64,8 @@ def test_save_and_get_performance_history():
     session = DataService.start_quiz_session(student.id, "English", "Intermediate")
     
     # Need to add a dummy question to satisfy FK
-    execute_query("INSERT INTO questions (id, prompt) VALUES (?, ?)", (1, "Dummy Question"))
+    # Ensure all NOT NULL columns are provided, including 'subject' and 'prompt'
+    execute_query("INSERT INTO questions (id, prompt, subject, correct_answer) VALUES (?, ?, ?, ?)", (1, "Dummy Question", "English", "Dummy Answer"))
 
     attempt = DataService.save_question_attempt(session.id, 1, "user_ans", True, 20.0)
     assert attempt.id is not None
@@ -116,7 +82,8 @@ def test_delete_performance_history():
     session = DataService.start_quiz_session(student.id, "Math", "Advanced")
     
     # Need to add a dummy question to satisfy FK
-    execute_query("INSERT INTO questions (id, prompt) VALUES (?, ?)", (1, "Dummy Question"))
+    # Ensure all NOT NULL columns are provided, including 'subject' and 'prompt'
+    execute_query("INSERT INTO questions (id, prompt, subject, correct_answer) VALUES (?, ?, ?, ?)", (1, "Dummy Question", "Math", "Dummy Answer"))
     
     DataService.save_question_attempt(session.id, 1, "ans1", True, 15.0)
     

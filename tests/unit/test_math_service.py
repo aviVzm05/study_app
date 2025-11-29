@@ -41,10 +41,23 @@ def test_get_topics_for_grade_subject(mock_models):
     math_service = MathService()
 
     # Mock data
-    mock_topic1 = MagicMock(spec=Topic, grade=5, subject_id=1, name="Math - Grade 5 Algebra")
-    mock_topic2 = MagicMock(spec=Topic, grade=5, subject_id=1, name="Math - Grade 5 Geometry")
-    mock_topic3 = MagicMock(spec=Topic, grade=6, subject_id=1, name="Math - Grade 6 Decimals")
-    mock_topic_find_all.return_value = [mock_topic1, mock_topic2, mock_topic3, MagicMock(grade=5, subject_id=2, name="English - Grade 5 Nouns")]
+    mock_topic1 = MagicMock(spec=Topic)
+    mock_topic1.grade = 5
+    mock_topic1.subject_id = 1
+    mock_topic1.name = "Math - Grade 5 Algebra"
+
+    mock_topic2 = MagicMock(spec=Topic)
+    mock_topic2.grade = 5
+    mock_topic2.subject_id = 1
+    mock_topic2.name = "Math - Grade 5 Geometry"
+
+    mock_topic3 = MagicMock(spec=Topic)
+    mock_topic3.grade = 6
+    mock_topic3.subject_id = 1
+    mock_topic3.name = "Math - Grade 6 Decimals"
+    
+    mock_topic4 = MagicMock(grade=5, subject_id=2, name="English - Grade 5 Nouns") # Non-Math topic
+    mock_topic_find_all.return_value = [mock_topic1, mock_topic2, mock_topic3, mock_topic4]
 
     # Test with existing grade and subject
     topics = math_service.get_topics_for_grade_subject(5, 1)

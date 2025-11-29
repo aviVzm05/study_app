@@ -1,7 +1,8 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, QLineEdit, QMessageBox
-from PyQt6.QtCore import Qt
-import json
-from services.math_validation import MathValidationService
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, QMessageBox, QRadioButton, QButtonGroup
+import logging
+from services.llm_service import LLMService # Import LLMService
+
+logger = logging.getLogger(__name__)
 
 class MathLessonView(QWidget):
     def __init__(self, parent=None):
@@ -9,8 +10,14 @@ class MathLessonView(QWidget):
         self.layout = QVBoxLayout()
         self.setLayout(self.layout)
         self.lesson_data = None
-        self.questions_data = []
+        self.llm_questions_data = [] # Store dynamically generated questions
         self.current_question_index = 0
+        self.current_difficulty_band = "Beginner" # Default difficulty, can be dynamic
+        self.score = 0 # Initialize score
+        self.total_questions = 0 # Initialize total questions
+        self.selected_answer = None # To store the selected radio button answer
+        self.options_button_group = QButtonGroup(self) # Group for radio buttons
+        self.options_button_group.buttonClicked.connect(self._on_option_selected)
         self.init_ui()
 
     def init_ui(self):
@@ -22,7 +29,7 @@ class MathLessonView(QWidget):
         self.lesson_content_display.setReadOnly(True)
         self.layout.addWidget(self.lesson_content_display)
 
-        self.start_quiz_button = QPushButton("Start Practice")
+        self.start_quiz_button = QPushButton("Start Dynamic Math Quiz")
         self.start_quiz_button.clicked.connect(self.start_practice)
         self.layout.addWidget(self.start_quiz_button)
 
@@ -38,9 +45,11 @@ class MathLessonView(QWidget):
         self.question_prompt_label = QLabel("Question Prompt")
         self.question_layout.addWidget(self.question_prompt_label)
 
-        self.answer_input = QLineEdit()
-        self.answer_input.setPlaceholderText("Enter your answer")
-        self.question_layout.addWidget(self.answer_input)
+        # Container for multiple choice options (Radio Buttons)
+        self.options_widget = QWidget()
+        self.options_layout = QVBoxLayout()
+        self.options_widget.setLayout(self.options_layout)
+        self.question_layout.addWidget(self.options_widget)
 
         self.submit_answer_button = QPushButton("Submit Answer")
         self.submit_answer_button.clicked.connect(self.submit_answer)
@@ -60,10 +69,23 @@ class MathLessonView(QWidget):
 
         self.layout.addStretch()
 
-    def set_lesson_data(self, lesson, questions):
+    def _clear_options(self):
+        """Clears all radio buttons from the options layout."""
+        while self.options_layout.count():
+            button = self.options_layout.takeAt(0).widget()
+            self.options_button_group.removeButton(button)
+            button.deleteLater()
+
+    def _on_option_selected(self, button):
+        """Stores the text of the selected radio button."""
+        self.selected_answer = button.text()
+
+    def set_lesson_data(self, lesson): # Modified to only take lesson data
         self.lesson_data = lesson
-        self.questions_data = questions
+        self.llm_questions_data = []
         self.current_question_index = 0
+        self.score = 0 # Reset score for new lesson
+        self.total_questions = 0 # Reset total questions for new lesson
         self.show_lesson()
 
     def show_lesson(self):
@@ -73,7 +95,7 @@ class MathLessonView(QWidget):
             self.start_quiz_button.show()
             self.question_widget.hide()
             self.feedback_label.setText("")
-            self.answer_input.clear()
+            self._clear_options() # Clear options when showing lesson
             self.next_question_button.hide()
         else:
             self.lesson_title_label.setText("No Lesson Available")
@@ -81,45 +103,92 @@ class MathLessonView(QWidget):
             self.start_quiz_button.hide()
 
     def start_practice(self):
-        if self.questions_data:
-            self.start_quiz_button.hide()
-            self.question_widget.show()
-            self.display_current_question()
-        else:
-            QMessageBox.information(self, "No Questions", "No practice questions available for this topic.")
+        self.start_quiz_button.hide()
+        self.question_widget.show()
+        self.score = 0
+        self.total_questions = 0
+        self.llm_questions_data = [] # Clear previous questions
+        self.current_question_index = 0
+        self._load_llm_question() # Call method to load question from LLM
+
+    def _load_llm_question(self):
+        """Loads new questions from the LLMService."""
+        try:
+            logger.info(f"Loading 20 new Math questions (Difficulty: {self.current_difficulty_band})...")
+            questions = LLMService.generate_question(
+                subject="Math", 
+                difficulty_band=self.current_difficulty_band, 
+                num_questions=20, # Request 20 questions
+                context_history=None
+            )
+            if questions:
+                self.llm_questions_data.extend(questions)
+                self.display_current_question()
+            else:
+                QMessageBox.warning(self, "LLM Error", "Could not generate questions from LLM. Please try again.")
+                self.question_widget.hide()
+                self.start_quiz_button.show()
+        except Exception as e:
+            logger.error(f"Error loading LLM question: {e}")
+            QMessageBox.critical(self, "LLM Error", f"Failed to load question: {e}. Please check your API key and network connection.")
+            self.question_widget.hide()
+            self.start_quiz_button.show()
 
     def display_current_question(self):
-        if self.current_question_index < len(self.questions_data):
-            question = self.questions_data[self.current_question_index]
-            self.question_prompt_label.setText(question.prompt)
-            self.answer_input.clear()
-            self.feedback_label.setText("")
-            self.submit_answer_button.show()
-            self.next_question_button.hide()
+        self._clear_options() # Clear previous options
+        self.selected_answer = None # Reset selected answer
+        if self.current_question_index < len(self.llm_questions_data):
+            question = self.llm_questions_data[self.current_question_index]
+            self.question_prompt_label.setText(f"Question {self.current_question_index + 1}/{len(self.llm_questions_data)}: {question.get('question_text', 'No question text.')}")
             
-            # Display options for multiple choice
-            if question.question_type == "multiple_choice" and question.options:
-                options = json.loads(question.options)
-                options_str = "\n".join([f"- {opt}" for opt in options])
-                self.question_prompt_label.setText(f"{question.prompt}\n\nOptions:\n{options_str}")
-
+            possible_answers = question.get("possible_answers", [])
+            if possible_answers:
+                for i, option_text in enumerate(possible_answers):
+                    radio_button = QRadioButton(option_text)
+                    self.options_layout.addWidget(radio_button)
+                    self.options_button_group.addButton(radio_button)
+            else:
+                # Fallback if no possible answers are provided (shouldn't happen with current LLM prompt)
+                self.question_prompt_label.setText(self.question_prompt_label.text() + "\n(No options provided, please note the answer in the explanation.)")
+            
+            self.feedback_label.setText("")
+            self.submit_answer_button.setEnabled(True) # Enable submit button
+            self.next_question_button.hide()
         else:
-            QMessageBox.information(self, "Practice Complete", "You have completed all practice questions!")
-            self.question_widget.hide()
-            self.start_quiz_button.show() # Option to restart or go back
+            self._finish_quiz()
 
     def submit_answer(self):
-        user_answer = self.answer_input.text().strip()
-        current_question = self.questions_data[self.current_question_index]
-        
-        validator = MathValidationService()
-        is_correct = validator.validate_answer(current_question.question_type, user_answer, current_question.correct_answer)
-        feedback_text = validator.get_feedback(is_correct, current_question.correct_answer)
-        self.feedback_label.setText(feedback_text)
-        
-        self.submit_answer_button.hide()
-        self.next_question_button.show()
+        user_answer = self.selected_answer
+        if not user_answer:
+            QMessageBox.warning(self, "No Answer Selected", "Please select an answer before submitting.")
+            return
 
+        current_question = self.llm_questions_data[self.current_question_index]
+        correct_answer = current_question.get("correct_answer", "").strip()
+        explanation = current_question.get("explanation", "No explanation provided.")
+
+        self.total_questions += 1
+        if user_answer.lower() == correct_answer.lower():
+            self.score += 1
+            self.feedback_label.setText(f"<font color='green'>Correct! </font> Explanation: {explanation}")
+        else:
+            self.feedback_label.setText(f"<font color='red'>Incorrect. </font> The correct answer was: {correct_answer}. Explanation: {explanation}")
+        
+        self.submit_answer_button.setEnabled(False) # Disable submit button after answer
+        self.next_question_button.show()
+    
     def display_next_question(self):
         self.current_question_index += 1
-        self.display_current_question()
+        if self.current_question_index < len(self.llm_questions_data):
+            self.display_current_question()
+        else:
+            self._finish_quiz()
+
+    def _finish_quiz(self):
+        """Reports the score and closes the exercise widget."""
+        QMessageBox.information(self, "Quiz Complete", 
+                                f"You have completed the Math quiz!\nYour score: {self.score}/{self.total_questions}")
+        self.question_widget.hide()
+        self.start_quiz_button.show()
+        # Emit a signal or call a method on the parent to go back to main topic selection
+        # For now, just hide the exercise, the parent can decide what to do.

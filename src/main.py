@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QStackedWidget, QMessageBox
+from PyQt6.QtWidgets import QApplication, QWidget, QVBoxLayout, QStackedWidget, QMessageBox
 from ui.grade_selection_view import GradeSelectionView
 from ui.topic_selection_view import TopicSelectionView
 from ui.math_lesson_view import MathLessonView
@@ -6,9 +6,8 @@ from ui.english_exercise_view import EnglishExerciseView
 from models.schema import create_schema
 from services.data_seeder import seed_initial_data
 from services.logging_service import setup_logging, log_event
-from services.adaptive_learning_service import AdaptiveLearningService
 from services.data_service import DataService
-from models.models import Student, Topic, Subject, Lesson
+from models.models import Lesson
 import sys
 
 class KidsLearningApp(QWidget):

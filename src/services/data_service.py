@@ -1,6 +1,6 @@
 import logging
 from models.models import Student, QuizSession, PerformanceHistory
-from services.database import execute_query, fetch_one, fetch_all
+from services.database import execute_query
 
 logger = logging.getLogger(__name__)
 

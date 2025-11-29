@@ -1,6 +1,5 @@
 import sqlite3
 from pathlib import Path
-import datetime
 
 DATABASE_DIR = Path(__file__).parent.parent.parent / "database"
 DATABASE_FILE = DATABASE_DIR / "content.db"
@@ -89,14 +88,51 @@ def create_tables(conn):
         )
     """)
 
-    # Alter questions table to add new columns if they don't exist
-    # Check if 'explanation' column exists
-    cursor.execute("PRAGMA table_info(questions)")
-    columns = [col[1] for col in cursor.fetchall()]
-    if 'explanation' not in columns:
-        cursor.execute("ALTER TABLE questions ADD COLUMN explanation TEXT")
-    if 'difficulty_band' not in columns:
-        cursor.execute("ALTER TABLE questions ADD COLUMN difficulty_band TEXT")
+    # Create subjects table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS subjects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL UNIQUE
+        )
+    """)
+
+    # Create topics table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS topics (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            subject_id INTEGER NOT NULL,
+            grade INTEGER NOT NULL,
+            name TEXT NOT NULL,
+            FOREIGN KEY (subject_id) REFERENCES subjects (id)
+        )
+    """)
+
+    # Create lessons table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS lessons (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            topic_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            content TEXT NOT NULL,
+            FOREIGN KEY (topic_id) REFERENCES topics (id)
+        )
+    """)
+
+    # Create questions table
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS questions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            topic_id INTEGER,
+            question_type TEXT,
+            prompt TEXT NOT NULL,
+            options TEXT,
+            correct_answer TEXT,
+            explanation TEXT,
+            difficulty_band TEXT,
+            subject TEXT NOT NULL, -- Added subject column
+            FOREIGN KEY (topic_id) REFERENCES topics (id)
+        )
+    """)
 
     # Create quiz_sessions table
     cursor.execute("""

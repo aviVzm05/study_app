@@ -1,6 +1,4 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, QLineEdit, QMessageBox
-from PyQt6.QtCore import Qt
-import json
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QLabel, QTextEdit, QPushButton, QMessageBox, QRadioButton, QButtonGroup
 import logging
 from services.llm_service import LLMService # Import LLMService
 
@@ -15,6 +13,11 @@ class EnglishExerciseView(QWidget):
         self.llm_questions_data = [] # Store dynamically generated questions
         self.current_question_index = 0
         self.current_difficulty_band = "Beginner" # Default difficulty
+        self.score = 0 # Initialize score
+        self.total_questions = 0 # Initialize total questions
+        self.selected_answer = None # To store the selected radio button answer
+        self.options_button_group = QButtonGroup(self) # Group for radio buttons
+        self.options_button_group.buttonClicked.connect(self._on_option_selected)
         self.init_ui()
 
     def init_ui(self):
@@ -42,9 +45,11 @@ class EnglishExerciseView(QWidget):
         self.question_text_label = QLabel("Question:") # Label for dynamic question text
         self.exercise_layout.addWidget(self.question_text_label)
 
-        self.user_answer_input = QLineEdit() # For shorter answers (multiple choice, single word)
-        self.user_answer_input.setPlaceholderText("Type your answer here...")
-        self.exercise_layout.addWidget(self.user_answer_input)
+        # Container for multiple choice options (Radio Buttons)
+        self.options_widget = QWidget()
+        self.options_layout = QVBoxLayout()
+        self.options_widget.setLayout(self.options_layout)
+        self.exercise_layout.addWidget(self.options_widget)
 
         self.submit_answer_button = QPushButton("Submit Answer")
         self.submit_answer_button.clicked.connect(self.submit_answer)
@@ -64,10 +69,23 @@ class EnglishExerciseView(QWidget):
 
         self.layout.addStretch()
 
+    def _clear_options(self):
+        """Clears all radio buttons from the options layout."""
+        while self.options_layout.count():
+            button = self.options_layout.takeAt(0).widget()
+            self.options_button_group.removeButton(button)
+            button.deleteLater()
+
+    def _on_option_selected(self, button):
+        """Stores the text of the selected radio button."""
+        self.selected_answer = button.text()
+
     def set_lesson_data(self, lesson): # Modified to only take lesson data
         self.lesson_data = lesson
         self.llm_questions_data = []
         self.current_question_index = 0
+        self.score = 0 # Reset score for new lesson
+        self.total_questions = 0 # Reset total questions for new lesson
         self.show_lesson()
 
     def show_lesson(self):
@@ -77,7 +95,7 @@ class EnglishExerciseView(QWidget):
             self.start_exercise_button.show()
             self.exercise_widget.hide()
             self.feedback_label.setText("")
-            self.user_answer_input.clear()
+            self._clear_options() # Clear options when showing lesson
             self.next_question_button.hide()
         else:
             self.lesson_title_label.setText("No Lesson Available")
@@ -87,19 +105,21 @@ class EnglishExerciseView(QWidget):
     def start_exercise(self):
         self.start_exercise_button.hide()
         self.exercise_widget.show()
+        self.score = 0
+        self.total_questions = 0
+        self.llm_questions_data = [] # Clear previous questions
+        self.current_question_index = 0
         self._load_llm_question() # Call method to load question from LLM
 
     def _load_llm_question(self):
-        """Loads a new question from the LLMService."""
+        """Loads new questions from the LLMService."""
         try:
-            # Assuming subject is English, and difficulty is from self.current_difficulty_band
-            # In a real app, context_history would be passed from a student's profile
-            logger.info(f"Loading new English question (Difficulty: {self.current_difficulty_band})...")
+            logger.info(f"Loading 20 new English questions (Difficulty: {self.current_difficulty_band})...")
             questions = LLMService.generate_question(
                 subject="English", 
                 difficulty_band=self.current_difficulty_band, 
-                num_questions=1, 
-                context_history=None # To be implemented later with actual history
+                num_questions=20, # Request 20 questions
+                context_history=None
             )
             if questions:
                 self.llm_questions_data.extend(questions)
@@ -115,38 +135,60 @@ class EnglishExerciseView(QWidget):
             self.start_exercise_button.show()
 
     def display_current_question(self):
+        self._clear_options() # Clear previous options
+        self.selected_answer = None # Reset selected answer
         if self.current_question_index < len(self.llm_questions_data):
             question = self.llm_questions_data[self.current_question_index]
-            self.question_text_label.setText(question.get("question_text", "No question text."))
-            self.user_answer_input.clear()
+            self.question_text_label.setText(f"Question {self.current_question_index + 1}/{len(self.llm_questions_data)}: {question.get('question_text', 'No question text.')}")
+            
+            possible_answers = question.get("possible_answers", [])
+            if possible_answers:
+                for i, option_text in enumerate(possible_answers):
+                    radio_button = QRadioButton(option_text)
+                    self.options_layout.addWidget(radio_button)
+                    self.options_button_group.addButton(radio_button)
+            else:
+                # Fallback if no possible answers are provided (shouldn't happen with current LLM prompt)
+                self.question_text_label.setText(self.question_text_label.text() + "\n(No options provided, type your answer below if applicable)")
+            
             self.feedback_label.setText("")
-            self.submit_answer_button.show()
+            self.submit_answer_button.setEnabled(True) # Enable submit button
             self.next_question_button.hide()
         else:
-            QMessageBox.information(self, "Quiz Complete", "You have completed all questions for this session!")
-            self.exercise_widget.hide()
-            self.start_exercise_button.show()
+            self._finish_quiz()
 
     def submit_answer(self):
-        user_answer = self.user_answer_input.text().strip()
-        current_question = self.llm_questions_data[self.current_question_index]
-        
-        # Display explanation from LLM response directly (T011, T012)
-        explanation = current_question.get("explanation", "No explanation provided.")
-        correct_answer = current_question.get("correct_answer", "N/A")
+        user_answer = self.selected_answer
+        if not user_answer:
+            QMessageBox.warning(self, "No Answer Selected", "Please select an answer before submitting.")
+            return
 
+        current_question = self.llm_questions_data[self.current_question_index]
+        correct_answer = current_question.get("correct_answer", "").strip()
+        explanation = current_question.get("explanation", "No explanation provided.")
+
+        self.total_questions += 1
         if user_answer.lower() == correct_answer.lower():
+            self.score += 1
             self.feedback_label.setText(f"<font color='green'>Correct! </font> Explanation: {explanation}")
         else:
             self.feedback_label.setText(f"<font color='red'>Incorrect. </font> The correct answer was: {correct_answer}. Explanation: {explanation}")
         
-        self.submit_answer_button.hide()
+        self.submit_answer_button.setEnabled(False) # Disable submit button after answer
         self.next_question_button.show()
-
-    def display_next_question(self): # Renamed from display_next_exercise
+    
+    def display_next_question(self):
         self.current_question_index += 1
         if self.current_question_index < len(self.llm_questions_data):
             self.display_current_question()
         else:
-            # If no more questions in current batch, load another one
-            self._load_llm_question()
+            self._finish_quiz()
+
+    def _finish_quiz(self):
+        """Reports the score and closes the exercise widget."""
+        QMessageBox.information(self, "Quiz Complete", 
+                                f"You have completed the quiz!\nYour score: {self.score}/{self.total_questions}")
+        self.exercise_widget.hide()
+        self.start_exercise_button.show()
+        # Emit a signal or call a method on the parent to go back to main topic selection
+        # For now, just hide the exercise, the parent can decide what to do.

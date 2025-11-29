@@ -1,6 +1,5 @@
 from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QPushButton
 from models.models import Subject, Topic
-from services.database import get_db_connection, close_db_connection
 
 class TopicSelectionView(QWidget):
     def __init__(self, parent=None):

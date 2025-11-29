@@ -1,6 +1,5 @@
 import logging
 from services.data_service import DataService
-from models.models import Student, PerformanceHistory
 
 logger = logging.getLogger(__name__)
 
@@ -93,7 +92,6 @@ class AdaptiveLearningService:
 if __name__ == '__main__':
     from services.logging_service import setup_logging
     from services.database import get_db_connection, close_db_connection, execute_query
-    import os
 
     setup_logging()
     conn = get_db_connection() # Ensure tables are created

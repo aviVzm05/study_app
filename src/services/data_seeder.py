@@ -1,6 +1,5 @@
 from services.database import execute_query
 from models.models import Subject, Topic, Lesson, Question
-from datetime import datetime
 
 def seed_initial_data():
     """Seeds the database with initial content based on MVP requirements."""
