@@ -127,7 +127,99 @@ def seed_initial_data():
                                      prompt="What is the median of 7, 3, 9, 5, 11?", options='["7", "9", "5"]', correct_answer="7").save()
             Question(topic_id=math_data_handling_topic.id, question_type="multiple_choice",
                                      prompt="What is the mode of 4, 7, 9, 4, 3, 4, 5, 7?", options='["3", "7", "4"]', correct_answer="4").save()
-    print("Initial data seeded successfully.")
+        # Add 25 new questions for 5th Grade Math (Number System and Operations)
+        if grade == 5:
+            math_ns_ops_topic = Topic(subject_id=math_subject.id, grade=grade, name=f"Math - Grade {grade} Number System and Operations")
+            math_ns_ops_topic.save()
+            Lesson(topic_id=math_ns_ops_topic.id, title=f"Number System and Operations (Grade {grade})",
+                   content="""This lesson covers essential concepts in number systems including LCM, HCF, mean, median, mode, and fundamental operations like multiplication, division, and fractions.""").save()
+
+            # --- Word Problems ---
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="A box contains 12 apples. If you buy 5 boxes, how many apples do you have in total? ____",
+                     correct_answer="60").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="John has 24 candies. He shares them equally among 4 friends. How many candies does each friend get?",
+                     options='["4", "6", "8", "12"]', correct_answer="6").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="There are 7 days in a week. How many days are there in 8 weeks? ____",
+                     correct_answer="56").save()
+
+            # --- LCM and HCF ---
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="What is the LCM of 4 and 6?",
+                     options='["2", "12", "24", "1"]', correct_answer="12").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="The HCF of 10 and 15 is ____.",
+                     correct_answer="5").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="What is the LCM of 3 and 5?",
+                     options='["1", "8", "15", "30"]', correct_answer="15").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="The HCF of 12 and 18 is ____.",
+                     correct_answer="6").save()
+
+            # --- Mean, Mode, Median ---
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="Find the mean of: 2, 4, 6, 8.",
+                     options='["4", "5", "6", "7"]', correct_answer="5").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="What is the mode of: 1, 2, 2, 3, 4? ____",
+                     correct_answer="2").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="Find the median of: 3, 1, 5, 2, 4.",
+                     options='["1", "2", "3", "4"]', correct_answer="3").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="The mean of 5, 7, 9 is ____.",
+                     correct_answer="7").save()
+
+            # --- Common Multiplication and Division ---
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="What is 7 multiplied by 8? ____",
+                     correct_answer="56").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="Divide 45 by 9.",
+                     options='["4", "5", "6", "7"]', correct_answer="5").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="What is 12 x 10? ____",
+                     correct_answer="120").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="How many times does 7 go into 49?",
+                     options='["6", "7", "8", "9"]', correct_answer="7").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="If you have 6 groups of 5, how many do you have in total? ____",
+                     correct_answer="30").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="What is 81 divided by 9?",
+                     options='["7", "8", "9", "10"]', correct_answer="9").save()
+
+            # --- Fractions ---
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="Which is equivalent to 1/2?",
+                     options='["2/3", "2/4", "3/5", "1/4"]', correct_answer="2/4").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="What is 1/4 + 1/4? (in simplest form) ____",
+                     correct_answer="1/2").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="Subtract 3/5 from 4/5.",
+                     options='["1/5", "2/5", "1/10", "7/5"]', correct_answer="1/5").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="What is 2/3 of 9? ____",
+                     correct_answer="6").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="Which fraction is largest: 1/3, 1/2, 1/4?",
+                     options='["1/3", "1/2", "1/4"]', correct_answer="1/2").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="Simplify the fraction 6/8. ____",
+                     correct_answer="3/4").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="multiple_choice",
+                     prompt="If you have 1/2 a pizza and eat 1/4 of it, how much is left?",
+                     options='["1/4", "1/2", "3/4", "0"]', correct_answer="1/4").save()
+            Question(topic_id=math_ns_ops_topic.id, question_type="fill_in_the_blank",
+                     prompt="Convert the mixed number 1 1/2 to an improper fraction. ____",
+                     correct_answer="3/2").save()
+
+        print("Initial data seeded successfully.")
 
 if __name__ == '__main__':
     seed_initial_data()
