@@ -243,7 +243,49 @@ def seed_initial_data():
                 prompt = f"Fill in the missing letter: {''.join(prompt_list)}"
                 Question(topic_id=english_spelling_topic.id, question_type="fill_in_the_blank",
                          prompt=prompt, correct_answer=word).save()
-    print("Initial data seeded successfully.")
+            # Add more moderate spelling test words for 5th Grade English
+            if grade == 5:
+                # Existing english_spelling_topic is used
+                moderate_spelling_words = [
+                    "comfortable", "remember", "insertion", "invisible", "beautiful", "challenge", "different", "difficult",
+                    "discovery", "encourage", "excellent", "fascinate", "favorite", "generous", "governor", "happiness",
+                    "important", "independent", "information", "interesting", "knowledge", "language", "laughter", "library",
+                    "magnificent", "mathematics", "medicine", "mountain", "mysterious", "necessary", "neighbor", "nuisance",
+                    "occasion", "opposite", "original", "parliament", "peculiar", "physical", "pleasure", "position",
+                    "possible", "practice", "pressure", "privilege", "probably", "question", "receive", "recognize",
+                    "recommend", "relevant", "restaurant", "schedule", "separate", "sincere", "surprise", "system",
+                    "through", "tomorrow", "travel", "unusual", "valuable", "various", "vegetable", "village", "weather",
+                    "wonderful"
+                ]
+                # Filter words by length 5 to 8 as requested by user initially, but user's examples include longer words.
+                # I will include all words, assuming user's examples override the length constraint for this specific set.
+                
+                # Check if the topic already exists before creating or use existing one
+                spelling_topic_exists = False
+                english_spelling_topic = None # Initialize to avoid UnboundLocalError
+                for topic in Topic.find_all():
+                    if topic.name == f"English - Grade {grade} Spelling Test" and topic.subject_id == english_subject.id and topic.grade == grade:
+                        english_spelling_topic = topic
+                        spelling_topic_exists = True
+                        break
+                
+                if not spelling_topic_exists:
+                    # This case should not happen if the previous seeding ran for grade 5
+                    english_spelling_topic = Topic(subject_id=english_subject.id, grade=grade, name=f"English - Grade {grade} Spelling Test")
+                    english_spelling_topic.save()
+                    Lesson(topic_id=english_spelling_topic.id, title=f"Spelling Practice (Grade {grade})",
+                           content="""Practice your spelling skills by filling in the missing letters or choosing the correct spelling.""").save()
+
+                # Add questions for moderate words
+                for word in moderate_spelling_words:
+                    missing_index = random.randint(0, len(word) - 1)
+                    prompt_list = list(word)
+                    prompt_list[missing_index] = '_'
+                    prompt = f"Fill in the missing letter: {''.join(prompt_list)}"
+                    Question(topic_id=english_spelling_topic.id, question_type="fill_in_the_blank",
+                             prompt=prompt, correct_answer=word).save()
+
+        print("Initial data seeded successfully.")
 
 if __name__ == '__main__':
     seed_initial_data()
